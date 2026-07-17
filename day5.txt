@@ -1,0 +1,172 @@
+DML:
+1.insert:
+syntax :insert into table-name(column-names)values(columnvalues);
+select * from tablename;
+2.update:
+update tablename set column name where condition;
+3.delete :delete from tablename where condition;
+4.truncate:
+truncate table tablename;
+5.drop :
+drop table tablename;
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| college            |
+| da4                |
+| hospital           |
+| information_schema |
+| kittu              |
+| krish              |
+| mannu              |
+| mysql              |
+| performance_schema |
+| pfs4               |
+| priya              |
+| radha              |
+| student            |
+| student1           |
+| sys                |
+| tanu               |
+| university         |
++--------------------+
+17 rows in set (0.02 sec)
+
+mysql> use da4
+Database changed
+mysql> show tables;
++---------------+
+| Tables_in_da4 |
++---------------+
+| codegnan_emp  |
+| companystaff  |
+| students      |
++---------------+
+3 rows in set (0.01 sec)
+
+mysql> desc companystaff;
++-----------------+----------------------------------------------------+------+-----+---------+-------+
+| Field           | Type                                               | Null | Key | Default | Extra |
++-----------------+----------------------------------------------------+------+-----+---------+-------+
+| COMPANYNAME     | varchar(30)                                        | YES  |     | NULL    |       |
+| EMP_ID          | int                                                | YES  |     | NULL    |       |
+| AGE             | tinyint                                            | YES  |     | NULL    |       |
+| EXPERIENCE      | smallint                                           | YES  |     | NULL    |       |
+| GENDER          | char(1)                                            | YES  |     | NULL    |       |
+| EMPLOYEE_NAME   | varchar(100)                                       | YES  |     | NULL    |       |
+| QUALIFICATION   | varchar(20)                                        | YES  |     | NULL    |       |
+| ADDRESS         | tinyint                                            | YES  |     | NULL    |       |
+| SALARY          | decimal(15,2)                                      | YES  |     | NULL    |       |
+| DEPARTMENT      | enum('HR','IT','SALES','FINANCE','SUPPORT')        | YES  |     | NULL    |       |
+| STATUS          | varchar(30)                                        | YES  |     | NULL    |       |
+| SKILLS          | set('JAVA','PYTHON','SQL','EXCEL','COMMUNICATION') | YES  |     | NULL    |       |
+| DATE_OF_JOINING | date                                               | YES  |     | NULL    |       |
+| EMAIL           | tinytext                                           | YES  |     | NULL    |       |
++-----------------+----------------------------------------------------+------+-----+---------+-------+
+14 rows in set (0.01 sec)
+
+mysql> desc codegnan_emp;
++-----------+--------------+------+-----+---------+-------+
+| Field     | Type         | Null | Key | Default | Extra |
++-----------+--------------+------+-----+---------+-------+
+| EMPID     | varchar(5)   | YES  |     | NULL    |       |
+| firstname | varchar(60)  | YES  |     | NULL    |       |
+| lastname  | varchar(100) | YES  |     | NULL    |       |
+| AGE       | int          | YES  |     | NULL    |       |
+| DOJ       | date         | YES  |     | NULL    |       |
+| ADDRESS   | tinytext     | YES  |     | NULL    |       |
+| DEPT      | varchar(50)  | YES  |     | NULL    |       |
++-----------+--------------+------+-----+---------+-------+
+7 rows in set (0.00 sec)
+
+mysql> alter table codegnan_emp rename to employee;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> desc employee;
++-----------+--------------+------+-----+---------+-------+
+| Field     | Type         | Null | Key | Default | Extra |
++-----------+--------------+------+-----+---------+-------+
+| EMPID     | varchar(5)   | YES  |     | NULL    |       |
+| firstname | varchar(60)  | YES  |     | NULL    |       |
+| lastname  | varchar(100) | YES  |     | NULL    |       |
+| AGE       | int          | YES  |     | NULL    |       |
+| DOJ       | date         | YES  |     | NULL    |       |
+| ADDRESS   | tinytext     | YES  |     | NULL    |       |
+| DEPT      | varchar(50)  | YES  |     | NULL    |       |
++-----------+--------------+------+-----+---------+-------+
+7 rows in set (0.00 sec)
+
+mysql> tee C:\mysql\mysqlclassnotes\day5.txt
+Logging to file 'C:\mysql\mysqlclassnotes\day5.txt'
+mysql> insert into emp(empid,firstname,lastname,age,doj,address,dept)values('E0001','Kusuma',''priya','25','02-08-2025','vizag','python');
+    '> ^C
+mysql> insert into employee(EMPID,firstname,lastname,AGE,DOJ,ADDRESS,DEPT)values('E0001','kusuma','priya','25','02-08-2025','vizag','python');
+ERROR 1292 (22007): Incorrect date value: '02-08-2025' for column 'DOJ' at row 1
+mysql> insert into employee(EMPID,firstname,lastname,AGE,ADDRESS,DEPT)values('E0001','kusuma','priya','25','vizag','python');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * employee;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'employee' at line 1
+mysql> select *from employee;
++-------+-----------+----------+------+------+---------+--------+
+| EMPID | firstname | lastname | AGE  | DOJ  | ADDRESS | DEPT   |
++-------+-----------+----------+------+------+---------+--------+
+| E0001 | kusuma    | priya    |   25 | NULL | vizag   | python |
++-------+-----------+----------+------+------+---------+--------+
+1 row in set (0.00 sec)
+
+mysql> update employee set lastname='reddy' where empid='E0001';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from employee;
++-------+-----------+----------+------+------+---------+--------+
+| EMPID | firstname | lastname | AGE  | DOJ  | ADDRESS | DEPT   |
++-------+-----------+----------+------+------+---------+--------+
+| E0001 | kusuma    | reddy    |   25 | NULL | vizag   | python |
++-------+-----------+----------+------+------+---------+--------+
+1 row in set (0.00 sec)
+
+mysql> insert into employee(EMPID,firstname,lastname,AGE,ADDRESS,DEPT)values('E0002','Keerthy','reddy','26','kakinada','science');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from employee;
++-------+-----------+----------+------+------+----------+---------+
+| EMPID | firstname | lastname | AGE  | DOJ  | ADDRESS  | DEPT    |
++-------+-----------+----------+------+------+----------+---------+
+| E0001 | kusuma    | reddy    |   25 | NULL | vizag    | python  |
+| E0002 | Keerthy   | reddy    |   26 | NULL | kakinada | science |
++-------+-----------+----------+------+------+----------+---------+
+2 rows in set (0.00 sec)
+
+mysql> tee C:\mysql\mysqlclassnotes\task5.txt
+Logging to file 'C:\mysql\mysqlclassnotes\task5.txt'
+mysql> insert into employee(EMPID,firstname,lastname,AGE,ADRESS,DEPT)values('E0003','sanjana','reddy','25','vizainagaram','java');
+ERROR 1054 (42S22): Unknown column 'ADRESS' in 'field list'
+mysql> insert into employee(EMPID,firstname,lastname,AGE,ADDRESS,DEPT)values('E0003','sanjana','reddy','25','vizainagaram','java');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into employee(EMPID,firstname,lastname,AGE,ADDRESS,DEPT)values('E0004','rahul','reddy','28','PUNE','HR');
+Query OK, 1 row affected (0.01 sec)
+
+mysql>  insert into employee(EMPID,firstname,lastname,AGE,ADDRESS,DEPT)values('E0005','mahesh','babu','29','BNG','SALES');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from employee;
++-------+-----------+----------+------+------+--------------+---------+
+| EMPID | firstname | lastname | AGE  | DOJ  | ADDRESS      | DEPT    |
++-------+-----------+----------+------+------+--------------+---------+
+| E0001 | kusuma    | reddy    |   25 | NULL | vizag        | python  |
+| E0002 | Keerthy   | reddy    |   26 | NULL | kakinada     | science |
+| E0003 | sanjana   | reddy    |   25 | NULL | vizainagaram | java    |
+| E0004 | rahul     | reddy    |   28 | NULL | PUNE         | HR      |
+| E0005 | mahesh    | babu     |   29 | NULL | BNG          | SALES   |
++-------+-----------+----------+------+------+--------------+---------+
+5 rows in set (0.00 sec)
+
+mysql> delete from employee where lastname='babu';
+Query OK, 1 row affected (0.00 sec)
+
+mysql>  insert into employee(EMPID,firstname,lastname,AGE,ADDRESS,DEPT)values('E0004','rahul','reddy','28','PUNE','HR');
+
