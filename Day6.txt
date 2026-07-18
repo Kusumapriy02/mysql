@@ -1,0 +1,154 @@
+mysql> create table employee(empid int auto_increment primary key,name varchar(20),department varchar(30));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> desc employee;
++------------+-------------+------+-----+---------+----------------+
+| Field      | Type        | Null | Key | Default | Extra          |
++------------+-------------+------+-----+---------+----------------+
+| empid      | int         | NO   | PRI | NULL    | auto_increment |
+| name       | varchar(20) | YES  |     | NULL    |                |
+| department | varchar(30) | YES  |     | NULL    |                |
++------------+-------------+------+-----+---------+----------------+
+3 rows in set (0.00 sec)
+mysql> insert into employee(name,department)values('kusu','IT'),('priya','CSE'),('Divya','EEE');
+Query OK, 3 rows affected (0.00 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from employee;
++-------+-------+------------+
+| empid | name  | department |
++-------+-------+------------+
+|     1 | kusu  | IT         |
+|     2 | priya | CSE        |
+|     3 | Divya | EEE        |
++-------+-------+------------+
+3 rows in set (0.00 sec)
+mysql> create table backupemployee as select*from employee;
+Query OK, 3 rows affected (0.03 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> desc backupemployee;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| empid      | int         | NO   |     | 0       |       |
+| name       | varchar(20) | YES  |     | NULL    |       |
+| department | varchar(30) | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> select * from backupemployee;
++-------+-------+------------+
+| empid | name  | department |
++-------+-------+------------+
+|     1 | kusu  | IT         |
+|     2 | priya | CSE        |
+|     3 | Divya | EEE        |
++-------+-------+------------+
+3 rows in set (0.00 sec)
+mysql> create table products(productID int auto_increment Primary key,productname varchar(20),price decimal(10,2),quantity int,totalamount decimal(10,2) generated always as(price*quantity)stored);
+Query OK, 0 rows affected (0.03 sec)
+mysql> insert into products(productname,price,quantity)values('shampoo',240,2),('soap',400,5),('chips',30,6);
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from products;
++-----------+-------------+--------+----------+-------------+
+| productID | productname | price  | quantity | totalamount |
++-----------+-------------+--------+----------+-------------+
+|         1 | shampoo     | 240.00 |        2 |      480.00 |
+|         2 | soap        | 400.00 |        5 |     2000.00 |
+|         3 | chips       |  30.00 |        6 |      180.00 |
++-----------+-------------+--------+----------+-------------+
+3 rows in set (0.00 sec)
+mysql> update products set price=200 where productID=2;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from products;
++-----------+-------------+--------+----------+-------------+
+| productID | productname | price  | quantity | totalamount |
++-----------+-------------+--------+----------+-------------+
+|         1 | shampoo     | 240.00 |        2 |      480.00 |
+|         2 | soap        | 200.00 |        5 |     1000.00 |
+|         3 | chips       |  30.00 |        6 |      180.00 |
++-----------+-------------+--------+----------+-------------+
+3 rows in set (0.00 sec)
+
+mysql> desc products;
++-------------+---------------+------+-----+---------+------------------+
+| Field       | Type          | Null | Key | Default | Extra            |
++-------------+---------------+------+-----+---------+------------------+
+| productID   | int           | NO   | PRI | NULL    | auto_increment   |
+| productname | varchar(20)   | YES  |     | NULL    |                  |
+| price       | decimal(10,2) | YES  |     | NULL    |                  |
+| quantity    | int           | YES  |     | NULL    |                  |
+| totalamount | decimal(10,2) | YES  |     | NULL    | STORED GENERATED |
++-------------+---------------+------+-----+---------+------------------+
+5 rows in set (0.00 sec)
+
+mysql> --DCL(data control language):
+    -> used to control access to data in the database -mainly to grant or revoke privilege to users
+    -> grant: gives specific privilege to a user or role
+    -> revoke:revoke privilage on table_name from "username"^C
+mysql> desc students;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| studentid   | char(7)     | YES  |     | NULL    |       |
+| studentname | varchar(40) | YES  |     | NULL    |       |
+| age         | varchar(30) | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+mysql> DROP TABLE STUDENTS;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> DESC STUDENTS;
+ERROR 1146 (42S02): Table 'da4.students' doesn't exist
+mysql> CREATE TABLE STUDENTS(
+    -> SID INT AUTO_INCREMENT PRIMARY KEY,
+    -> SNAME VARCHAR(20),
+    -> SMOBILE VARCHAR(10),
+    -> SMARKS INT(3)
+    -> );
+Query OK, 0 rows affected, 1 warning (0.02 sec)
+
+mysql> INSERT INTO STUDENTS(SNAME,SMOBILE,SMARKS)
+    -> VALUES
+    -> ('SUNNY','9456389267',35),
+    -> ('BUNNY','9456389289',45),
+    -> ('CHINNY','9467389289',55);
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM STUDENTS;
++-----+--------+------------+--------+
+| SID | SNAME  | SMOBILE    | SMARKS |
++-----+--------+------------+--------+
+|   1 | SUNNY  | 9456389267 |     35 |
+|   2 | BUNNY  | 9456389289 |     45 |
+|   3 | CHINNY | 9467389289 |     55 |
++-----+--------+------------+--------+
+3 rows in set (0.00 sec)
+
+mysql> CREATE USER JANI IDENTIFIED BY 'JANI123';
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> CREATE USER USHA IDENTIFIED BY 'USHA@123';
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> SHOW USERS;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'USERS' at line 1
+mysql> -- SYNTAX: GRANT PRIVILAGE ON TABLE_NAME TO USER_NAME;
+mysql> GRANT SELECT,UPDATE,INSERT ON STUDENTS TO USHA;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> GRANT SELECT,DELETE ON STUDENTS TO JANI;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> -- syntax: REVOKE PREIVILAGE ON TABLE_NAME FROM USER_NAME;
+mysql> REVOKE UPDATE,INSERT ON STUDENTS FROM USHA;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql>
+
