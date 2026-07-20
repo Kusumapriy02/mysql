@@ -1,0 +1,158 @@
+mysql> -- TCL(transaction control language): commit,roll back
+mysql> -- the process of combining all related operations into a single unit and excuting them according to rule "either all operation should be succed or none should be succed is called transaction.
+mysql> -- A transaction is considered a single unit of work and follows the princple ,"either all or none"
+mysql> -- example: funds transfer
+mysql> -- consider a money transfer process between two accounts      1. debit amount from the sender's account
+mysql> -- 2. credit amount into the receiver's account
+mysql> -- both operation should be excuted as a single transaction.
+mysql> -- if the amount is debited from senders account succesfully but, crediting the recovers account fails. it may lead to the data inconsistency problems.
+mysql> -- there are two types of transactions such as local transactions and global transaction
+mysql> -- local transaction : in this all operation of a transaction s are excuted in same data base 
+mysql> -- example : funds transfer from one account to another account where both accounts belong to same bank.
+mysql> -- global transaction: in global transaction, operation of a transaction are excuted on different databases.
+-example: funds transfer from one account to another account belongs to different bank.
+    -> there 4 properities :(ACID)
+    -> A(atomicity): all or nothing
+You withdraw ₹5,000. The amount is deducted from your account only if the cash is dispensed. If the ATM fails to dispense cash, the deduction is rolled back.
+    -> C(consistency): the database remains in valid stateIf your balance is ₹10,000 and you withdraw ₹5,000, the new balance becomes ₹5,000. The database never shows an invalid balance.
+    -> I(isolation):Transactions dont interface eachother
+If you and another person access the same account simultaneously, one transaction completes before the other affects the balance, preventing incorrect results.
+    -> D(durability):changes are permanent.
+After the ATM confirms the withdrawal, the updated balance remains saved even if there is a power failure or the bank server restarts.
+mysql> create table employees(empid int primary key,empname varchar(30),salary decimal(10,2));
+Query OK, 0 rows affected (0.04 sec)
+mysql> insert into employees values(111,'kusu',20000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into employees values(222,'usha',30000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> commit;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from employees;
++-------+---------+----------+
+| empid | empname | salary   |
++-------+---------+----------+
+|   111 | kusu    | 20000.00 |
+|   222 | usha    | 30000.00 |
++-------+---------+----------+
+2 rows in set (0.00 sec)
+mysql> start transaction;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> update employees set salary=40000 where empid=111;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from employees;
++-------+---------+----------+
+| empid | empname | salary   |
++-------+---------+----------+
+|   111 | kusu    | 40000.00 |
+|   222 | usha    | 30000.00 |
++-------+---------+----------+
+2 rows in set (0.00 sec)
+mysql> rollback;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from employees;
++-------+---------+----------+
+| empid | empname | salary   |
++-------+---------+----------+
+|   111 | kusu    | 20000.00 |
+|   222 | usha    | 30000.00 |
++-------+---------+----------+
+2 rows in set (0.00 sec)
+
+mysql> commit;
+Query OK, 0 rows affected (0.00 sec)
+mysql> use lock_demo;
+Database changed
+mysql> create table employee
+    -> (
+    -> empid int primary key,
+    -> emp_name varchar(50),
+    -> department varchar(30),
+    -> salary decimal(10,2)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+ right syntax to use near ')' at line 7
+mysql> insert into employee values
+    -> (101,'rahul','cse',40000),
+    -> (102,'rajesh','it',50000),
+    -> (103,'rakesh','ece',60000),
+    -> (104,'ramesh','eee',70000),
+    -> (105,'neha','mech',80000);
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> lock table employee write;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> unlock table employee;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'employee' at line 1
+mysql> unlock tables;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> lock table employee read;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> unlock tables;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from employee;
++-------+----------+------------+----------+
+| empid | emp_name | department | salary   |
++-------+----------+------------+----------+
+|   101 | rahul    | cse        | 40000.00 |
+|   102 | rajesh   | it         | 50000.00 |
+|   103 | rakesh   | ece        | 60000.00 |
+|   104 | ramesh   | eee        | 70000.00 |
+|   105 | neha     | mech       | 80000.00 |
++-------+----------+------------+----------+
+5 rows in set (0.00 sec)
+
+mysql> start transaction;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from employee where empid=101 for update;
++-------+----------+------------+----------+
+| empid | emp_name | department | salary   |
++-------+----------+------------+----------+
+|   101 | rahul    | cse        | 40000.00 |
++-------+----------+------------+----------+
+1 row in set (0.00 sec)
+
+mysql> commit;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> -- locking: it is a mechanism used by the databse to control concurrent access data.
+mysql> -- it ensure that users access the same data simultaneously the database maintaince consistency,integrity,and prevent conflicts.
+mysql> -- shared lock
+mysql> -- exclusive lock
+mysql> -- shared lock: A shared lock allows a transaction to read data,multiple transaction can hold a shared lock on the same row. no transaction can modify the row until all shared locks are released.
+mysql> --characterstic: read only,multiple users can read simultaneously,blocks update and delete
+    -> exclusive lock: An exclusive lock allows a transaction to modify data.
+    -> while an exclusive lock exists:
+    -> No other transaction can read using a locking read or modify row
+    -> only the transaction holding the lock can update /delete the data
+    -> characterstics:
+    -> used for insert,update,delete
+    -> only one exclusive lock at a time
+    -> blocks both reads and writes
+    -> Intent lock:
+    -> An intent lock is a table-level lock that indicates a transaction intends to place row level locks.
+    -> it helps Mysql quickly determine whether a table-level lock conflicts with exsiting row locks.
+    -> users do not usually create intent lock manually .INNODB manages them automatically
+    -> real time example:
+    -> shared lock: many stuents can read the same book at the same time
+    -> exclusive lock:
+    -> one student borrows the book , so nobody else can read or borrow it until it is returned.
+    -> intent lock: The librarain marks that someone is about to read or borrow books from a shelf,
+    -> helping coordinate access without checking everybook individually.
+
+
+
+    
+
