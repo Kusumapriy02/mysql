@@ -1,0 +1,377 @@
+Date and Time functions
+================================
+curdate():returns the current date;
+SYNTAX: select CURDATE() AS CURRENT__DATE;
+curtime():returns the current time
+SYNTAX:SELECT CURTIME() AS CURRENT__TIME;
+now() returns the current date and time
+SYNTAX:SELECT NOW() AS CURRENT_DATE_TIME;
+date(): extract date part
+SYNTAX:SELECT DATE(NOW()) AS EXTRACTED_DATE;
+time(): extract time part
+SYNTAX: SELECT TIME(NOW()) AS EXTRACTED_TIME
+year(): extract year
+SYNTAX:SELECT YEAR(NOW()) AS YEAR_PART;
+month(): extract month part
+SYNTAX:SELECT MONTH(NOW()) AS MONTH_PART;
+day()/day of month() extract day of month:
+SYNTAX: SELECT DAY(NOW()) AS DAY_PART;
+week():extract week() number
+SYNTAX:SELECT WEEK(NOW()) AS WEEK_NUMBER;
+dayofweek():extract day of the week
+SYNTAX:SELECT DAYOFWEEK(NOW()) AS DAY_OF_WEEK;
+date_add() add a date 
+ SYNTAX:SELECT DATE_ADD(NOW(),INTERVAL 20 DAY) AS NEW_DATE;
+date_sub():
+SYNTAX: SELECT DATE_SUB(NOW(),INTERVAL 20 DAY) AS NEW_DATE;
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| ps4                |
+| sys                |
++--------------------+
+5 rows in set (0.02 sec)
+
+mysql> use ps4;
+Database changed
+mysql> select CURDATE() AS CURRENT__DATE;
++---------------+
+| CURRENT__DATE |
++---------------+
+| 2026-07-29    |
++---------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT CURTIME() AS CURRENT__TIME;
++---------------+
+| CURRENT__TIME |
++---------------+
+| 11:12:54      |
++---------------+
+1 row in set (0.00 sec)
+
+mysql> SELCT NOW() AS CURRENT_DATE_TIME;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SELCT NOW() AS CURRENT_DATE_TIME' at line 1
+mysql> SELECT NOW() AS CURRENT_DATE_TIME;
++---------------------+
+| CURRENT_DATE_TIME   |
++---------------------+
+| 2026-07-29 11:13:49 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT DATE(NOW()) AS EXTRACTED_DATE;
++----------------+
+| EXTRACTED_DATE |
++----------------+
+| 2026-07-29     |
++----------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT TIME(NOW()) AS EXTRACTED_TIME;
++----------------+
+| EXTRACTED_TIME |
++----------------+
+| 11:15:23       |
++----------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT TIME('2026-04-03 2:32:12') AS EXTRACTED_TIME;
++----------------+
+| EXTRACTED_TIME |
++----------------+
+| 02:32:12       |
++----------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT YEAR(NOW()) AS YEAR_PART;
++-----------+
+| YEAR_PART |
++-----------+
+|      2026 |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> SELECT MONTH(NOW()) AS MONTH_PART;
++------------+
+| MONTH_PART |
++------------+
+|          7 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT DAY(NOW()) AS DAY_PART;
++----------+
+| DAY_PART |
++----------+
+|       29 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> SELECT WEEK(NOW()) AS WEEK_NUMBER;
++-------------+
+| WEEK_NUMBER |
++-------------+
+|          30 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT DAYOFWEEK(NOW()) AS DAY_OF_WEEK;
++-------------+
+| DAY_OF_WEEK |
++-------------+
+|           4 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT DATE_ADD(NOW(),INTERVAL 20 DAY) AS NEW_DATE;
++---------------------+
+| NEW_DATE            |
++---------------------+
+| 2026-08-18 11:21:27 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT DATE_SUB(NOW(),INTERVAL 20 DAY) AS NEW_DATE;
++---------------------+
+| NEW_DATE            |
++---------------------+
+| 2026-07-09 11:22:04 |
++---------------------+
+1 row in set (0.00 sec)
+mysql> -- DATE DIFFERENCE
+mysql> SELECT DATEDIFF(NOW(),'2000-05-23')AS DAYS_DIFF;
++-----------+
+| DAYS_DIFF |
++-----------+
+|      9563 |
++-----------+
+1 row in set (0.00 sec)
+SELECT DATE_FORMAT(NOW(),'%W,%M,%D,%Y')AS FORMATTED__DATE;
++--------------------------+
+| FORMATTED__DATE          |
++--------------------------+
+| Wednesday,July,29th,2026 |
++--------------------------+
+1 row in set (0.00 sec)
+mysql> SELECT LAST_DAY(NOW()) AS LAST__DAY;
++------------+
+| LAST__DAY  |
++------------+
+| 2026-07-31 |
++------------+
+1 row in set (0.00 sec)
+mysql> SELECT MONTHNAME(NOW()) AS MONTH__NAME;
++-------------+
+| MONTH__NAME |
++-------------+
+| July        |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT DAYNAME(NOW()) AS DAY__NAME;
++-----------+
+| DAY__NAME |
++-----------+
+| Wednesday |
++-----------+
+1 row in set (0.00 sec)
+mysql> SELECT QUARTER(NOW()) AS MONTH_QUARTER;
++---------------+
+| MONTH_QUARTER |
++---------------+
+|             3 |
++---------------+
+1 row in set (0.00 sec)
+mysql> SELECT TIME_TO_SEC('01:01:01') AS TOTAL_SECONDS;
++---------------+
+| TOTAL_SECONDS |
++---------------+
+|          3661 |
++---------------+
+1 row in set (0.00 sec)
+mysql> select date(login_time) as extracted_date from employee_attendance;
++----------------+
+| extracted_date |
++----------------+
+| 2024-11-20     |
+| 2024-11-21     |
+| 2024-11-22     |
+| 2024-11-23     |
+| 2024-11-24     |
+| 2024-11-25     |
+| 2024-11-26     |
+| 2024-11-27     |
+| 2024-11-28     |
+| 2024-11-29     |
++----------------+
+10 rows in set (0.00 sec)
+
+mysql> select time(login_time) as extracted_time from employee_attendance;
++----------------+
+| extracted_time |
++----------------+
+| 09:05:10       |
+| 08:55:20       |
+| 09:15:45       |
+| 09:00:00       |
+| 08:40:30       |
+| 09:12:10       |
+| 09:08:15       |
+| 08:50:30       |
+| 09:03:00       |
+| 09:18:50       |
++----------------+
+10 rows in set (0.00 sec)
+mysql> select emp_name,joining_date from employee_attendance where year(joining_date)=2022;
++----------+--------------+
+| emp_name | joining_date |
++----------+--------------+
+| Priya    | 2022-01-05   |
+| Pooja    | 2022-05-09   |
++----------+--------------+
+2 rows in set (0.00 sec)
+mysql> select emp_name,birth_date from employee_attendance where month(birth_date)=11;
++----------+------------+
+| emp_name | birth_date |
++----------+------------+
+| Sneha    | 1996-11-18 |
++----------+------------+
+1 row in set (0.01 sec)
+
+mysql> select emp_name,joining_date from employee_attendance where monthname(joining_date)='june';
++----------+--------------+
+| emp_name | joining_date |
++----------+--------------+
+| Rahul    | 2021-06-15   |
++----------+--------------+
+1 row in set (0.00 sec)
+
+mysql> select emp_name,birth_date from employee_attendance where day(birth_date)=10;
++----------+------------+
+| emp_name | birth_date |
++----------+------------+
+| Rahul    | 1998-05-10 |
++----------+------------+
+1 row in set (0.00 sec)
+
+mysql> select emp_name,joining_date from employee_attendance where quarter(joining_date)=2;
++----------+--------------+
+| emp_name | joining_date |
++----------+--------------+
+| Rahul    | 2021-06-15   |
+| Anjali   | 2023-04-17   |
+| Pooja    | 2022-05-09   |
++----------+--------------+
+3 rows in set (0.00 sec)
+
+mysql> select emp_name , joining_date from employee_attendance where timestampdiff(year,joining_date,curdate())>3;
++----------+--------------+
+| emp_name | joining_date |
++----------+--------------+
+| Rahul    | 2021-06-15   |
+| Sneha    | 2020-03-21   |
+| Arjun    | 2019-08-10   |
+| Priya    | 2022-01-05   |
+| Kiran    | 2018-12-11   |
+| Vijay    | 2021-09-14   |
+| Divya    | 2019-10-19   |
+| Ramesh   | 2017-07-01   |
+| Pooja    | 2022-05-09   |
++----------+--------------+
+9 rows in set (0.00 sec)
+
+mysql> select emp_name,timestampdiff(hour,login_time,login_out) as working_hour from employee_attendance;
+ERROR 1054 (42S22): Unknown column 'login_out' in 'field list'
+mysql> select emp_name,timestampdiff(hour,login_time,logout_time) as working_hour from employee_attendance;
++----------+--------------+
+| emp_name | working_hour |
++----------+--------------+
+| Rahul    |            9 |
+| Sneha    |            8 |
+| Arjun    |            9 |
+| Priya    |            8 |
+| Kiran    |            8 |
+| Anjali   |            8 |
+| Vijay    |            9 |
+| Divya    |            8 |
+| Ramesh   |            9 |
+| Pooja    |            9 |
++----------+--------------+
+10 rows in set (0.00 sec)
+
+mysql> select emp_name,timestampdiff(hour,login_time,logout_time) as working_min from employee_attendance;
++----------+-------------+
+| emp_name | working_min |
++----------+-------------+
+| Rahul    |           9 |
+| Sneha    |           8 |
+| Arjun    |           9 |
+| Priya    |           8 |
+| Kiran    |           8 |
+| Anjali   |           8 |
+| Vijay    |           9 |
+| Divya    |           8 |
+| Ramesh   |           9 |
+| Pooja    |           9 |
++----------+-------------+
+10 rows in set (0.00 sec)
+mysql> select emp_name,timestampdiff(minute,login_time,logout_time) as working_minutes from employee_attendance;
++----------+-----------------+
+| emp_name | working_minutes |
++----------+-----------------+
+| Rahul    |             550 |
+| Sneha    |             530 |
+| Arjun    |             559 |
+| Priya    |             535 |
+| Kiran    |             529 |
+| Anjali   |             532 |
+| Vijay    |             552 |
+| Divya    |             531 |
+| Ramesh   |             549 |
+| Pooja    |             546 |
++----------+-----------------+
+10 rows in set (0.00 sec)
+
+mysql> select emp_name , login_time from employee_attendance where time(login_time) >= '09:00:00';
++----------+---------------------+
+| emp_name | login_time          |
++----------+---------------------+
+| Rahul    | 2024-11-20 09:05:10 |
+| Arjun    | 2024-11-22 09:15:45 |
+| Priya    | 2024-11-23 09:00:00 |
+| Anjali   | 2024-11-25 09:12:10 |
+| Vijay    | 2024-11-26 09:08:15 |
+| Ramesh   | 2024-11-28 09:03:00 |
+| Pooja    | 2024-11-29 09:18:50 |
++----------+---------------------+
+7 rows in set (0.00 sec)
+
+mysql> select emp_name , login_time from employee_attendance where time(login_time) >= '09:10:00';
++----------+---------------------+
+| emp_name | login_time          |
++----------+---------------------+
+| Arjun    | 2024-11-22 09:15:45 |
+| Anjali   | 2024-11-25 09:12:10 |
+| Pooja    | 2024-11-29 09:18:50 |
++----------+---------------------+
+3 rows in set (0.00 sec)
+
+mysql> select emp_name , joing_date from employee_attendance where day(joing_date) = monday;
+mysql> select emp_name , joining_date from employee_attendance where dayname(joining_date) = 'monday';
++----------+--------------+
+| emp_name | joining_date |
++----------+--------------+
+| Anjali   | 2023-04-17   |
+| Pooja    | 2022-05-09   |
++----------+--------------+
+2 rows in set (0.00 sec)
+
+
+
+
+
